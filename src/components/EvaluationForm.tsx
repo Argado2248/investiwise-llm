@@ -5,6 +5,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { SelectField } from "./form/SelectField";
 import { NumberField } from "./form/NumberField";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { FormFieldWithTooltip } from "./FormFieldWithTooltip";
 
 const fundingStages = [
   { value: "pre-sadd", label: "Pre-sådd" },
@@ -78,7 +79,7 @@ export function EvaluationForm({ onSubmit }: { onSubmit: (data: any) => void }) 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <NumberField
+              <FormFieldWithTooltip
                 label="Företagsnamn"
                 id="companyName"
                 name="companyName"
@@ -86,6 +87,7 @@ export function EvaluationForm({ onSubmit }: { onSubmit: (data: any) => void }) 
                 onChange={handleChange}
                 placeholder="Ange företagsnamn"
                 tooltip={fieldTooltips.companyName}
+                type="text"
               />
               <NumberField
                 label="Bransch"
