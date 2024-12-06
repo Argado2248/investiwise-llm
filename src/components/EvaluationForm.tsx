@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { HelpCircle } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { FormFieldWithTooltip } from "./FormFieldWithTooltip";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const fundingStages = [
   {
@@ -30,6 +28,16 @@ const fundingStages = [
     description: "Bevisad affärsmodell, söker tillväxtkapital. Scoring kräver starkare finansiella metrics.",
   }
 ];
+
+const fieldTooltips = {
+  companyName: "Ange det officiella företagsnamnet som används i juridiska dokument.",
+  industry: "Välj den primära bransch där företaget verkar. Detta påverkar hur vi bedömer marknadspotential och tillväxtmöjligheter.",
+  revenue: "Ange den totala årliga omsättningen i SEK. För pre-revenue startups, ange 0.",
+  growth: "Procentuell tillväxt jämfört med föregående år. För nya företag, ange förväntad tillväxt.",
+  marketSize: "Total adresserbar marknad (TAM) i miljoner SEK. Detta är den totala potentiella marknaden för er produkt/tjänst.",
+  teamSize: "Antal heltidsanställda inklusive grundare. Deltidsanställda och konsulter räknas som 0.5.",
+  burnRate: "Genomsnittlig månatlig kostnad i SEK för att driva verksamheten, inklusive löner och andra operativa kostnader."
+};
 
 export function EvaluationForm({ onSubmit }: { onSubmit: (data: any) => void }) {
   const { toast } = useToast();
@@ -77,120 +85,99 @@ export function EvaluationForm({ onSubmit }: { onSubmit: (data: any) => void }) 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="companyName">Företagsnamn</Label>
-                <Input
-                  id="companyName"
-                  name="companyName"
-                  value={formData.companyName}
-                  onChange={handleChange}
-                  placeholder="Ange företagsnamn"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="industry">Bransch</Label>
-                <Input
-                  id="industry"
-                  name="industry"
-                  value={formData.industry}
-                  onChange={handleChange}
-                  placeholder="t.ex. SaaS, Fintech"
-                />
-              </div>
+              <FormFieldWithTooltip
+                label="Företagsnamn"
+                id="companyName"
+                name="companyName"
+                value={formData.companyName}
+                onChange={handleChange}
+                placeholder="Ange företagsnamn"
+                tooltip={fieldTooltips.companyName}
+              />
+              <FormFieldWithTooltip
+                label="Bransch"
+                id="industry"
+                name="industry"
+                value={formData.industry}
+                onChange={handleChange}
+                placeholder="t.ex. SaaS, Fintech"
+                tooltip={fieldTooltips.industry}
+              />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="revenue">Årlig Omsättning (SEK)</Label>
-                <Input
-                  id="revenue"
-                  name="revenue"
-                  type="number"
-                  value={formData.revenue}
-                  onChange={handleChange}
-                  placeholder="Årlig omsättning i SEK"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="growth">Tillväxt YoY (%)</Label>
-                <Input
-                  id="growth"
-                  name="growth"
-                  type="number"
-                  value={formData.growth}
-                  onChange={handleChange}
-                  placeholder="År över år tillväxt"
-                />
-              </div>
+              <FormFieldWithTooltip
+                label="Årlig Omsättning (SEK)"
+                id="revenue"
+                name="revenue"
+                type="number"
+                value={formData.revenue}
+                onChange={handleChange}
+                placeholder="Årlig omsättning i SEK"
+                tooltip={fieldTooltips.revenue}
+              />
+              <FormFieldWithTooltip
+                label="Tillväxt YoY (%)"
+                id="growth"
+                name="growth"
+                type="number"
+                value={formData.growth}
+                onChange={handleChange}
+                placeholder="År över år tillväxt"
+                tooltip={fieldTooltips.growth}
+              />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="marketSize">Total Marknadsstorlek (MSEK)</Label>
-                <Input
-                  id="marketSize"
-                  name="marketSize"
-                  type="number"
-                  value={formData.marketSize}
-                  onChange={handleChange}
-                  placeholder="TAM i miljoner SEK"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="teamSize">Teamstorlek</Label>
-                <Input
-                  id="teamSize"
-                  name="teamSize"
-                  type="number"
-                  value={formData.teamSize}
-                  onChange={handleChange}
-                  placeholder="Antal anställda"
-                />
-              </div>
+              <FormFieldWithTooltip
+                label="Total Marknadsstorlek (MSEK)"
+                id="marketSize"
+                name="marketSize"
+                type="number"
+                value={formData.marketSize}
+                onChange={handleChange}
+                placeholder="TAM i miljoner SEK"
+                tooltip={fieldTooltips.marketSize}
+              />
+              <FormFieldWithTooltip
+                label="Teamstorlek"
+                id="teamSize"
+                name="teamSize"
+                type="number"
+                value={formData.teamSize}
+                onChange={handleChange}
+                placeholder="Antal anställda"
+                tooltip={fieldTooltips.teamSize}
+              />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <Label htmlFor="fundingStage">Nuvarande Finansieringsfas</Label>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <HelpCircle className="h-4 w-4 text-gray-400" />
-                    </TooltipTrigger>
-                    <TooltipContent className="w-80 p-2">
-                      <p className="text-sm">Välj den fas som bäst beskriver företagets nuvarande stadie. Detta påverkar hur vi värderar olika metrics i bedömningen.</p>
-                    </TooltipContent>
-                  </Tooltip>
+                  <Select onValueChange={handleFundingStageChange} value={formData.fundingStage}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Välj finansieringsfas" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {fundingStages.map((stage) => (
+                        <SelectItem key={stage.value} value={stage.value}>
+                          {stage.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
-                <Select onValueChange={handleFundingStageChange} value={formData.fundingStage}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Välj finansieringsfas" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {fundingStages.map((stage) => (
-                      <Tooltip key={stage.value}>
-                        <TooltipTrigger asChild>
-                          <SelectItem value={stage.value}>{stage.label}</SelectItem>
-                        </TooltipTrigger>
-                        <TooltipContent className="w-80 p-2">
-                          <p className="text-sm">{stage.description}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    ))}
-                  </SelectContent>
-                </Select>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="burnRate">Månatlig Burn Rate (SEK)</Label>
-                <Input
-                  id="burnRate"
-                  name="burnRate"
-                  type="number"
-                  value={formData.burnRate}
-                  onChange={handleChange}
-                  placeholder="Månatlig burn rate i SEK"
-                />
-              </div>
+              <FormFieldWithTooltip
+                label="Månatlig Burn Rate (SEK)"
+                id="burnRate"
+                name="burnRate"
+                type="number"
+                value={formData.burnRate}
+                onChange={handleChange}
+                placeholder="Månatlig burn rate i SEK"
+                tooltip={fieldTooltips.burnRate}
+              />
             </div>
           </div>
 
