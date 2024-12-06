@@ -4,10 +4,6 @@ import { EvaluationResults } from "@/components/EvaluationResults";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { EvaluationPDF } from "@/components/EvaluationPDF";
 
-const Index = () => {
-  const [results, setResults] = useState<any>(null);
-  const [formData, setFormData] = useState<any>(null);
-
   const calculateMarketPotentialScore = (
     marketSize: number,
     industry: string,
@@ -73,6 +69,10 @@ const Index = () => {
 
     return Math.min(100, (growth / expectedGrowth) * 100);
   };
+
+const Index = () => {
+  const [results, setResults] = useState<any>(null);
+  const [formData, setFormData] = useState<any>(null);
 
   const handleEvaluation = (formData: any) => {
     setFormData(formData);
@@ -182,13 +182,13 @@ const Index = () => {
                   fileName="startup-evaluation.pdf"
                   className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors inline-flex items-center gap-2"
                 >
-                  {({ loading }) => 
+                  {({ loading }) => (
                     loading ? (
-                      <span>Genererar PDF...</span>
+                      "Genererar PDF..."
                     ) : (
-                      <span>Ladda ner utvärdering som PDF</span>
+                      "Ladda ner utvärdering som PDF"
                     )
-                  }
+                  )}
                 </PDFDownloadLink>
               </div>
             </>
