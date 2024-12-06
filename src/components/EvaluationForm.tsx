@@ -5,38 +5,52 @@ import { useToast } from "@/components/ui/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FormFieldWithTooltip } from "./FormFieldWithTooltip";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Textarea } from "@/components/ui/textarea";
 
 const fundingStages = [
   {
     value: "pre-sadd",
     label: "Pre-sådd",
-    description: "Idéstadiet eller tidig prototyp. Påverkar scoring genom högre tolerans för låg omsättning och team-storlek. Källa: Nordic Startup Funding Report 2023",
+    description: "Idéstadiet eller tidig prototyp. Påverkar scoring genom högre tolerans för låg omsättning och team-storlek.",
   },
   {
     value: "sadd",
     label: "Sådd",
-    description: "MVP finns, söker första externa finansiering. Scoring fokuserar på marknadspotential och team. Källa: Nordic Startup Funding Report 2023",
+    description: "MVP finns, söker första externa finansiering.",
   },
   {
     value: "angel",
     label: "Ängelrunda",
-    description: "Första externa investeringen. Scoring värderar tidig traktion och marknadspotential högt. Källa: Swedish Angel Investment Analysis 2023",
+    description: "Första externa investeringen.",
   },
   {
     value: "serie-a",
     label: "Serie A",
-    description: "Bevisad affärsmodell, söker tillväxtkapital. Scoring kräver starkare finansiella metrics. Källa: Nordic Venture Capital Report 2023",
+    description: "Bevisad affärsmodell, söker tillväxtkapital.",
   }
+];
+
+const productStages = [
+  { value: "concept", label: "Koncept/Idé" },
+  { value: "mvp", label: "MVP" },
+  { value: "beta", label: "Beta" },
+  { value: "launched", label: "Lanserad" },
+  { value: "scaling", label: "Skalning" }
 ];
 
 const fieldTooltips = {
   companyName: "Ange det officiella företagsnamnet som används i juridiska dokument.",
-  industry: "Välj den primära bransch där företaget verkar. Detta påverkar hur vi bedömer marknadspotential och tillväxtmöjligheter. Källa: Nordic Industry Classification Standard (NICS)",
-  revenue: "Ange den totala årliga omsättningen i SEK. För pre-revenue startups, ange 0. Benchmarks baserade på Nordic Startup Database 2023.",
-  growth: "Procentuell tillväxt jämfört med föregående år. För nya företag, ange förväntad tillväxt. Benchmarks från Nordic Scale-up Report 2023.",
-  marketSize: "Total adresserbar marknad (TAM) i miljoner SEK. Detta är den totala potentiella marknaden för er produkt/tjänst. Marknadsdata från Nordic Market Analysis 2023.",
-  teamSize: "Antal heltidsanställda inklusive grundare. Deltidsanställda och konsulter räknas som 0.5. Benchmarks från Nordic Startup Employment Study 2023.",
-  burnRate: "Genomsnittlig månatlig kostnad i SEK för att driva verksamheten, inklusive löner och andra operativa kostnader. Standarder från Nordic Venture Capital Association."
+  industry: "Välj den primära bransch där företaget verkar.",
+  revenue: "Ange den totala årliga omsättningen i SEK. För pre-revenue startups, ange 0.",
+  growth: "Procentuell tillväxt jämfört med föregående år. För nya företag, ange förväntad tillväxt.",
+  marketSize: "Total adresserbar marknad (TAM) i miljoner SEK.",
+  teamSize: "Antal heltidsanställda inklusive grundare.",
+  burnRate: "Genomsnittlig månatlig kostnad i SEK.",
+  founderBackground: "Beskriv grundarnas relevanta erfarenhet och kompetenser.",
+  productDescription: "Beskriv er produkt/tjänst och dess unika värdeproposition.",
+  competitiveAdvantage: "Beskriv era konkurrensfördelar och marknadshinder.",
+  productStage: "Välj nuvarande utvecklingsstadium för produkten/tjänsten.",
+  operationalRisks: "Beskriv huvudsakliga operativa risker och hanteringsstrategier."
 };
 
 export function EvaluationForm({ onSubmit }: { onSubmit: (data: any) => void }) {
@@ -50,6 +64,11 @@ export function EvaluationForm({ onSubmit }: { onSubmit: (data: any) => void }) 
     teamSize: "",
     fundingStage: "",
     burnRate: "",
+    founderBackground: "",
+    productDescription: "",
+    competitiveAdvantage: "",
+    productStage: "",
+    operationalRisks: ""
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -57,7 +76,7 @@ export function EvaluationForm({ onSubmit }: { onSubmit: (data: any) => void }) 
     if (Object.values(formData).some(value => !value)) {
       toast({
         title: "Valideringsfel",
-        description: "Vänligen fyll i alla fält",
+        description: "Vänligen fyll i alla obligatoriska fält",
         variant: "destructive",
       });
       return;
@@ -65,17 +84,17 @@ export function EvaluationForm({ onSubmit }: { onSubmit: (data: any) => void }) 
     onSubmit(formData);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData(prev => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
   };
 
-  const handleFundingStageChange = (value: string) => {
+  const handleSelectChange = (field: string, value: string) => {
     setFormData(prev => ({
       ...prev,
-      fundingStage: value,
+      [field]: value,
     }));
   };
 
@@ -103,6 +122,39 @@ export function EvaluationForm({ onSubmit }: { onSubmit: (data: any) => void }) 
                 placeholder="t.ex. SaaS, Fintech"
                 tooltip={fieldTooltips.industry}
               />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="block text-sm font-medium">Finansieringsfas</label>
+                <Select onValueChange={(value) => handleSelectChange("fundingStage", value)} value={formData.fundingStage}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Välj finansieringsfas" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {fundingStages.map((stage) => (
+                      <SelectItem key={stage.value} value={stage.value}>
+                        {stage.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <label className="block text-sm font-medium">Produktstadie</label>
+                <Select onValueChange={(value) => handleSelectChange("productStage", value)} value={formData.productStage}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Välj produktstadie" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {productStages.map((stage) => (
+                      <SelectItem key={stage.value} value={stage.value}>
+                        {stage.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -151,32 +203,58 @@ export function EvaluationForm({ onSubmit }: { onSubmit: (data: any) => void }) 
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <Select onValueChange={handleFundingStageChange} value={formData.fundingStage}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Välj finansieringsfas" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {fundingStages.map((stage) => (
-                        <SelectItem key={stage.value} value={stage.value}>
-                          {stage.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              <FormFieldWithTooltip
-                label="Månatlig Burn Rate (SEK)"
-                id="burnRate"
-                name="burnRate"
-                type="number"
-                value={formData.burnRate}
+            <div className="space-y-2">
+              <label className="block text-sm font-medium">Grundarnas Bakgrund</label>
+              <Textarea
+                name="founderBackground"
+                value={formData.founderBackground}
                 onChange={handleChange}
-                placeholder="Månatlig burn rate i SEK"
-                tooltip={fieldTooltips.burnRate}
+                placeholder="Beskriv grundarnas relevanta erfarenhet och kompetenser"
+                className="min-h-[100px]"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium">Produktbeskrivning</label>
+              <Textarea
+                name="productDescription"
+                value={formData.productDescription}
+                onChange={handleChange}
+                placeholder="Beskriv er produkt/tjänst och dess unika värdeproposition"
+                className="min-h-[100px]"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium">Konkurrensfördelar</label>
+              <Textarea
+                name="competitiveAdvantage"
+                value={formData.competitiveAdvantage}
+                onChange={handleChange}
+                placeholder="Beskriv era konkurrensfördelar och marknadshinder"
+                className="min-h-[100px]"
+              />
+            </div>
+
+            <FormFieldWithTooltip
+              label="Månatlig Burn Rate (SEK)"
+              id="burnRate"
+              name="burnRate"
+              type="number"
+              value={formData.burnRate}
+              onChange={handleChange}
+              placeholder="Månatlig burn rate i SEK"
+              tooltip={fieldTooltips.burnRate}
+            />
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium">Operativa Risker</label>
+              <Textarea
+                name="operationalRisks"
+                value={formData.operationalRisks}
+                onChange={handleChange}
+                placeholder="Beskriv huvudsakliga operativa risker och hanteringsstrategier"
+                className="min-h-[100px]"
               />
             </div>
           </div>
