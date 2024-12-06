@@ -25,14 +25,14 @@ export function EvaluationResults({ data }: EvaluationResultsProps) {
     <Card className="p-6 w-full max-w-2xl mx-auto bg-white shadow-lg animate-fade-in">
       <div className="space-y-6">
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-2">Evaluation Score</h2>
+          <h2 className="text-2xl font-bold mb-2">Utvärderingspoäng</h2>
           <p className={`text-4xl font-bold ${getScoreColor(data.score)}`}>
             {data.score}/100
           </p>
         </div>
 
         <div className="space-y-4">
-          <h3 className="text-xl font-semibold">Metric Breakdown</h3>
+          <h3 className="text-xl font-semibold">Mätetal Uppdelning</h3>
           {data.metrics.map((metric, index) => (
             <div key={index} className="space-y-2">
               <div className="flex justify-between text-sm">
@@ -46,14 +46,14 @@ export function EvaluationResults({ data }: EvaluationResultsProps) {
                 />
               </div>
               <div className="text-xs text-gray-500">
-                Industry benchmark: {metric.benchmark}%
+                Branschriktmärke: {metric.benchmark}%
               </div>
             </div>
           ))}
         </div>
 
         <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-          <h3 className="text-xl font-semibold mb-2">Recommendation</h3>
+          <h3 className="text-xl font-semibold mb-2">Rekommendation</h3>
           <p className="text-gray-700">{data.recommendation}</p>
         </div>
       </div>

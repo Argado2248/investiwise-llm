@@ -22,8 +22,8 @@ export function EvaluationForm({ onSubmit }: { onSubmit: (data: any) => void }) 
     e.preventDefault();
     if (Object.values(formData).some(value => !value)) {
       toast({
-        title: "Validation Error",
-        description: "Please fill in all fields",
+        title: "Valideringsfel",
+        description: "Vänligen fyll i alla fält",
         variant: "destructive",
       });
       return;
@@ -44,104 +44,104 @@ export function EvaluationForm({ onSubmit }: { onSubmit: (data: any) => void }) 
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="companyName">Company Name</Label>
+              <Label htmlFor="companyName">Företagsnamn</Label>
               <Input
                 id="companyName"
                 name="companyName"
                 value={formData.companyName}
                 onChange={handleChange}
-                placeholder="Enter company name"
+                placeholder="Ange företagsnamn"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="industry">Industry</Label>
+              <Label htmlFor="industry">Bransch</Label>
               <Input
                 id="industry"
                 name="industry"
                 value={formData.industry}
                 onChange={handleChange}
-                placeholder="e.g., SaaS, Fintech"
+                placeholder="t.ex. SaaS, Fintech"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="revenue">Annual Revenue ($)</Label>
+              <Label htmlFor="revenue">Årlig Omsättning (SEK)</Label>
               <Input
                 id="revenue"
                 name="revenue"
                 type="number"
                 value={formData.revenue}
                 onChange={handleChange}
-                placeholder="Annual revenue in USD"
+                placeholder="Årlig omsättning i SEK"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="growth">YoY Growth (%)</Label>
+              <Label htmlFor="growth">Tillväxt YoY (%)</Label>
               <Input
                 id="growth"
                 name="growth"
                 type="number"
                 value={formData.growth}
                 onChange={handleChange}
-                placeholder="Year-over-year growth"
+                placeholder="År över år tillväxt"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="marketSize">Total Market Size ($B)</Label>
+              <Label htmlFor="marketSize">Total Marknadsstorlek (MSEK)</Label>
               <Input
                 id="marketSize"
                 name="marketSize"
                 type="number"
                 value={formData.marketSize}
                 onChange={handleChange}
-                placeholder="TAM in billions USD"
+                placeholder="TAM i miljoner SEK"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="teamSize">Team Size</Label>
+              <Label htmlFor="teamSize">Teamstorlek</Label>
               <Input
                 id="teamSize"
                 name="teamSize"
                 type="number"
                 value={formData.teamSize}
                 onChange={handleChange}
-                placeholder="Number of employees"
+                placeholder="Antal anställda"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="fundingStage">Current Funding Stage</Label>
+              <Label htmlFor="fundingStage">Nuvarande Finansieringsfas</Label>
               <Input
                 id="fundingStage"
                 name="fundingStage"
                 value={formData.fundingStage}
                 onChange={handleChange}
-                placeholder="e.g., Seed, Series A"
+                placeholder="t.ex. Sådd, Serie A"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="burnRate">Monthly Burn Rate ($)</Label>
+              <Label htmlFor="burnRate">Månatlig Burn Rate (SEK)</Label>
               <Input
                 id="burnRate"
                 name="burnRate"
                 type="number"
                 value={formData.burnRate}
                 onChange={handleChange}
-                placeholder="Monthly burn rate in USD"
+                placeholder="Månatlig burn rate i SEK"
               />
             </div>
           </div>
         </div>
 
         <Button type="submit" className="w-full bg-primary hover:bg-primary/90">
-          Evaluate Startup
+          Utvärdera Startup
         </Button>
       </form>
     </Card>
