@@ -89,7 +89,7 @@ export function EvaluationForm({ onSubmit }: { onSubmit: (data: any) => void }) 
                 tooltip={fieldTooltips.companyName}
                 type="text"
               />
-              <NumberField
+              <FormFieldWithTooltip
                 label="Bransch"
                 id="industry"
                 name="industry"
@@ -97,6 +97,7 @@ export function EvaluationForm({ onSubmit }: { onSubmit: (data: any) => void }) 
                 onChange={handleChange}
                 placeholder="t.ex. SaaS, Fintech"
                 tooltip={fieldTooltips.industry}
+                type="text"
               />
             </div>
 
