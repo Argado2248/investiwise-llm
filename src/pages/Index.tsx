@@ -1,24 +1,24 @@
 import { useState } from "react";
 import { EvaluationForm } from "@/components/EvaluationForm";
 import { EvaluationResults } from "@/components/EvaluationResults";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { EvaluationPDF } from "@/components/EvaluationPDF";
 
 const Index = () => {
   const [results, setResults] = useState<any>(null);
+  const [formData, setFormData] = useState<any>(null);
 
   const calculateMarketPotentialScore = (
     marketSize: number,
     industry: string,
     fundingStage: string
   ) => {
-    // Adjust market size expectations based on funding stage
     const stageMultiplier = {
-      "Pre-sådd": 1.5, // Higher multiplier for very early stage
+      "Pre-sådd": 1.5,
       "Sådd": 1.2,
       "Serie A": 1.0,
-      // Add more stages as needed
     }[fundingStage] || 1.0;
 
-    // Industry-specific TAM evaluation
     const industryMultiplier = {
       "SaaS": 1.2,
       "Fintech": 1.3,
@@ -26,7 +26,6 @@ const Index = () => {
       "Deeptech": 1.4,
       "Cleantech": 1.3,
       "Medtech": 1.2,
-      // Add more industries as needed
     }[industry] || 1.0;
 
     const baseScore = (marketSize / 1000) * stageMultiplier * industryMultiplier;
@@ -34,7 +33,6 @@ const Index = () => {
   };
 
   const calculateTeamScore = (teamSize: number, fundingStage: string) => {
-    // Adjust team size expectations based on stage
     const expectedSize = {
       "Pre-sådd": 2,
       "Sådd": 4,
@@ -51,12 +49,10 @@ const Index = () => {
     fundingStage: string
   ) => {
     if (fundingStage === "Pre-sådd" || fundingStage === "Sådd") {
-      // For very early stage, focus more on runway and burn rate
       const runway = revenue > 0 ? (revenue * 12) / burnRate : 0;
-      return Math.min(100, (runway / 18) * 100); // 18 months runway as benchmark
+      return Math.min(100, (runway / 18) * 100);
     }
 
-    // For later stages, use traditional metrics
     return Math.min(100, (revenue / burnRate) * 50);
   };
 
@@ -66,11 +62,9 @@ const Index = () => {
     revenue: number
   ) => {
     if (revenue < 100000 && (fundingStage === "Pre-sådd" || fundingStage === "Sådd")) {
-      // For pre-revenue or very early revenue companies
-      return growth > 0 ? 70 : 40; // Base score on having positive growth trajectory
+      return growth > 0 ? 70 : 40;
     }
 
-    // Traditional growth evaluation for more established companies
     const expectedGrowth = {
       "Pre-sådd": 20,
       "Sådd": 50,
@@ -81,7 +75,7 @@ const Index = () => {
   };
 
   const handleEvaluation = (formData: any) => {
-    // Convert string inputs to numbers
+    setFormData(formData);
     const revenue = parseFloat(formData.revenue);
     const growth = parseFloat(formData.growth);
     const marketSize = parseFloat(formData.marketSize);
@@ -89,38 +83,48 @@ const Index = () => {
     const burnRate = parseFloat(formData.burnRate);
     const { industry, fundingStage } = formData;
 
-    // Calculate individual metric scores with weights adjusted for early stage
+    const marketPotentialScore = calculateMarketPotentialScore(marketSize, industry, fundingStage);
+    const financialHealthScore = calculateFinancialHealthScore(revenue, burnRate, fundingStage);
+    const teamScore = calculateTeamScore(teamSize, fundingStage);
+    const growthScore = calculateGrowthScore(growth, fundingStage, revenue);
+
     const metrics = [
       {
         category: "Marknadspotential",
-        score: calculateMarketPotentialScore(marketSize, industry, fundingStage) * 0.35, // Increased weight for market potential
-        benchmark: 70
+        score: marketPotentialScore * 0.35,
+        benchmark: 70,
+        impact: `Baserat på marknadsstorlek ${marketSize}M SEK och ${industry}-industrin`,
+        rawData: { marketSize, industry }
       },
       {
         category: "Finansiell Hälsa",
-        score: calculateFinancialHealthScore(revenue, burnRate, fundingStage) * 0.20,
-        benchmark: 65
+        score: financialHealthScore * 0.20,
+        benchmark: 65,
+        impact: `Baserat på ${revenue} SEK i omsättning och ${burnRate} SEK burn rate`,
+        rawData: { revenue, burnRate }
       },
       {
         category: "Team & Genomförande",
-        score: calculateTeamScore(teamSize, fundingStage) * 0.30, // Increased weight for team
-        benchmark: 65
+        score: teamScore * 0.30,
+        benchmark: 65,
+        impact: `Team med ${teamSize} medlemmar i ${fundingStage}-fas`,
+        rawData: { teamSize }
       },
       {
         category: "Tillväxtmått",
-        score: calculateGrowthScore(growth, fundingStage, revenue) * 0.15,
-        benchmark: 70
+        score: growthScore * 0.15,
+        benchmark: 70,
+        impact: `${growth}% tillväxt i ${fundingStage}-fas`,
+        rawData: { growth }
       },
     ];
 
-    // Calculate overall score (weighted average)
     const overallScore = Math.round(
       metrics.reduce((acc, metric) => acc + metric.score, 0)
     );
 
-    // Generate recommendation based on score and stage
     let recommendation = "";
-    if (fundingStage === "Pre-sådd" || fundingStage === "Sådd") {
+    if (fundingStage === "pre-sadd" || fundingStage === "sadd") {
       if (overallScore >= 75) {
         recommendation = "Mycket lovande tidigt stadie startup med stark marknadspotential och team. Rekommenderar fortsatt due diligence med fokus på produktvalidering och go-to-market strategi.";
       } else if (overallScore >= 55) {
@@ -138,7 +142,6 @@ const Index = () => {
       }
     }
 
-    // Round metric scores for display
     const roundedMetrics = metrics.map(metric => ({
       ...metric,
       score: Math.round(metric.score)
@@ -148,6 +151,7 @@ const Index = () => {
       score: overallScore,
       recommendation,
       metrics: roundedMetrics,
+      rawData: formData
     });
   };
 
@@ -165,7 +169,22 @@ const Index = () => {
 
         <div className="space-y-8">
           <EvaluationForm onSubmit={handleEvaluation} />
-          {results && <EvaluationResults data={results} />}
+          {results && (
+            <>
+              <EvaluationResults data={results} />
+              <div className="flex justify-center mt-4">
+                <PDFDownloadLink
+                  document={<EvaluationPDF data={results} formData={formData} />}
+                  fileName="startup-evaluation.pdf"
+                  className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors inline-flex items-center gap-2"
+                >
+                  {({ loading }) =>
+                    loading ? 'Genererar PDF...' : 'Ladda ner utvärdering som PDF'
+                  }
+                </PDFDownloadLink>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

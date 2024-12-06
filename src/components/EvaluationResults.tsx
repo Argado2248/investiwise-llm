@@ -5,6 +5,7 @@ interface Metric {
   score: number;
   benchmark: number;
   impact: string;
+  rawData?: any;
 }
 
 interface EvaluationResultsProps {
@@ -35,7 +36,7 @@ export function EvaluationResults({ data }: EvaluationResultsProps) {
         </div>
 
         <div className="space-y-4">
-          <h3 className="text-xl font-semibold">Mätetal Uppdelning</h3>
+          <h3 className="text-xl font-semibold">Detaljerad Analys</h3>
           {data.metrics.map((metric, index) => (
             <div key={index} className="space-y-2">
               <div className="flex justify-between text-sm">
@@ -44,7 +45,7 @@ export function EvaluationResults({ data }: EvaluationResultsProps) {
               </div>
               <div className="h-2 bg-gray-200 rounded-full">
                 <div
-                  className="h-full bg-secondary rounded-full"
+                  className="h-full bg-primary rounded-full"
                   style={{ width: getScoreWidth(metric.score) }}
                 />
               </div>
