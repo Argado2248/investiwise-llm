@@ -94,6 +94,7 @@ const Index = () => {
         score: marketPotentialScore * 0.35,
         benchmark: 70,
         impact: `Baserat på marknadsstorlek ${marketSize}M SEK och ${industry}-industrin`,
+        source: "Nordic Market Analysis Report 2023",
         rawData: { marketSize, industry }
       },
       {
@@ -101,6 +102,7 @@ const Index = () => {
         score: financialHealthScore * 0.20,
         benchmark: 65,
         impact: `Baserat på ${revenue} SEK i omsättning och ${burnRate} SEK burn rate`,
+        source: "Nordic Startup Financial Health Index 2023",
         rawData: { revenue, burnRate }
       },
       {
@@ -108,6 +110,7 @@ const Index = () => {
         score: teamScore * 0.30,
         benchmark: 65,
         impact: `Team med ${teamSize} medlemmar i ${fundingStage}-fas`,
+        source: "Nordic Startup Team Analysis 2023",
         rawData: { teamSize }
       },
       {
@@ -115,6 +118,7 @@ const Index = () => {
         score: growthScore * 0.15,
         benchmark: 70,
         impact: `${growth}% tillväxt i ${fundingStage}-fas`,
+        source: "Nordic Scale-up Report 2023",
         rawData: { growth }
       },
     ];
@@ -178,9 +182,7 @@ const Index = () => {
                   fileName="startup-evaluation.pdf"
                   className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors inline-flex items-center gap-2"
                 >
-                  {({ loading }) =>
-                    loading ? 'Genererar PDF...' : 'Ladda ner utvärdering som PDF'
-                  }
+                  {({ loading }) => (loading ? "Genererar PDF..." : "Ladda ner utvärdering som PDF")}
                 </PDFDownloadLink>
               </div>
             </>

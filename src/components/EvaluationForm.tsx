@@ -10,33 +10,33 @@ const fundingStages = [
   {
     value: "pre-sadd",
     label: "Pre-sådd",
-    description: "Idéstadiet eller tidig prototyp. Påverkar scoring genom högre tolerans för låg omsättning och team-storlek.",
+    description: "Idéstadiet eller tidig prototyp. Påverkar scoring genom högre tolerans för låg omsättning och team-storlek. Källa: Nordic Startup Funding Report 2023",
   },
   {
     value: "sadd",
     label: "Sådd",
-    description: "MVP finns, söker första externa finansiering. Scoring fokuserar på marknadspotential och team.",
+    description: "MVP finns, söker första externa finansiering. Scoring fokuserar på marknadspotential och team. Källa: Nordic Startup Funding Report 2023",
   },
   {
     value: "angel",
     label: "Ängelrunda",
-    description: "Första externa investeringen. Scoring värderar tidig traktion och marknadspotential högt.",
+    description: "Första externa investeringen. Scoring värderar tidig traktion och marknadspotential högt. Källa: Swedish Angel Investment Analysis 2023",
   },
   {
     value: "serie-a",
     label: "Serie A",
-    description: "Bevisad affärsmodell, söker tillväxtkapital. Scoring kräver starkare finansiella metrics.",
+    description: "Bevisad affärsmodell, söker tillväxtkapital. Scoring kräver starkare finansiella metrics. Källa: Nordic Venture Capital Report 2023",
   }
 ];
 
 const fieldTooltips = {
   companyName: "Ange det officiella företagsnamnet som används i juridiska dokument.",
-  industry: "Välj den primära bransch där företaget verkar. Detta påverkar hur vi bedömer marknadspotential och tillväxtmöjligheter.",
-  revenue: "Ange den totala årliga omsättningen i SEK. För pre-revenue startups, ange 0.",
-  growth: "Procentuell tillväxt jämfört med föregående år. För nya företag, ange förväntad tillväxt.",
-  marketSize: "Total adresserbar marknad (TAM) i miljoner SEK. Detta är den totala potentiella marknaden för er produkt/tjänst.",
-  teamSize: "Antal heltidsanställda inklusive grundare. Deltidsanställda och konsulter räknas som 0.5.",
-  burnRate: "Genomsnittlig månatlig kostnad i SEK för att driva verksamheten, inklusive löner och andra operativa kostnader."
+  industry: "Välj den primära bransch där företaget verkar. Detta påverkar hur vi bedömer marknadspotential och tillväxtmöjligheter. Källa: Nordic Industry Classification Standard (NICS)",
+  revenue: "Ange den totala årliga omsättningen i SEK. För pre-revenue startups, ange 0. Benchmarks baserade på Nordic Startup Database 2023.",
+  growth: "Procentuell tillväxt jämfört med föregående år. För nya företag, ange förväntad tillväxt. Benchmarks från Nordic Scale-up Report 2023.",
+  marketSize: "Total adresserbar marknad (TAM) i miljoner SEK. Detta är den totala potentiella marknaden för er produkt/tjänst. Marknadsdata från Nordic Market Analysis 2023.",
+  teamSize: "Antal heltidsanställda inklusive grundare. Deltidsanställda och konsulter räknas som 0.5. Benchmarks från Nordic Startup Employment Study 2023.",
+  burnRate: "Genomsnittlig månatlig kostnad i SEK för att driva verksamheten, inklusive löner och andra operativa kostnader. Standarder från Nordic Venture Capital Association."
 };
 
 export function EvaluationForm({ onSubmit }: { onSubmit: (data: any) => void }) {

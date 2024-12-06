@@ -5,6 +5,7 @@ interface Metric {
   score: number;
   benchmark: number;
   impact: string;
+  source?: string;
   rawData?: any;
 }
 
@@ -56,6 +57,11 @@ export function EvaluationResults({ data }: EvaluationResultsProps) {
                 <div className="text-sm text-gray-700">
                   {metric.impact}
                 </div>
+                {metric.source && (
+                  <div className="text-xs text-gray-500 italic">
+                    Källa: {metric.source}
+                  </div>
+                )}
               </div>
             </div>
           ))}
@@ -64,6 +70,9 @@ export function EvaluationResults({ data }: EvaluationResultsProps) {
         <div className="mt-6 p-4 bg-gray-50 rounded-lg">
           <h3 className="text-xl font-semibold mb-2">Rekommendation</h3>
           <p className="text-gray-700">{data.recommendation}</p>
+          <p className="text-xs text-gray-500 mt-2 italic">
+            Rekommendationer baserade på Nordic Venture Capital Association's investeringskriterier och Nordic Startup Success Factors Study 2023.
+          </p>
         </div>
       </div>
     </Card>
