@@ -1,14 +1,17 @@
 import { Card } from "@/components/ui/card";
 
+interface Metric {
+  category: string;
+  score: number;
+  benchmark: number;
+  impact: string;
+}
+
 interface EvaluationResultsProps {
   data: {
     score: number;
     recommendation: string;
-    metrics: {
-      category: string;
-      score: number;
-      benchmark: number;
-    }[];
+    metrics: Metric[];
   };
 }
 
@@ -45,8 +48,13 @@ export function EvaluationResults({ data }: EvaluationResultsProps) {
                   style={{ width: getScoreWidth(metric.score) }}
                 />
               </div>
-              <div className="text-xs text-gray-500">
-                Branschriktmärke: {metric.benchmark}%
+              <div className="space-y-1">
+                <div className="text-xs text-gray-500">
+                  Branschriktmärke: {metric.benchmark}%
+                </div>
+                <div className="text-sm text-gray-700">
+                  {metric.impact}
+                </div>
               </div>
             </div>
           ))}
