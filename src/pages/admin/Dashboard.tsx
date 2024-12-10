@@ -6,7 +6,15 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { EvaluationCard } from "@/components/admin/EvaluationCard";
 import { History } from "lucide-react";
-import { Link } from "react-router-dom";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export function Dashboard() {
   const navigate = useNavigate();
@@ -44,6 +52,24 @@ export function Dashboard() {
       if (error) {
         toast.error('Failed to fetch evaluations');
         throw error;
+      }
+      return data;
+    },
+  });
+
+  const { data: recentlyDeleted } = useQuery({
+    queryKey: ['recently-deleted-evaluations'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('startup_evaluations')
+        .select('*')
+        .eq('deleted', true)
+        .order('updated_at', { ascending: false })
+        .limit(3);
+
+      if (error) {
+        console.error('Failed to fetch recently deleted evaluations:', error);
+        return [];
       }
       return data;
     },
@@ -89,13 +115,46 @@ export function Dashboard() {
         <div className="w-full px-4 md:px-6 py-4 flex justify-between items-center">
           <h1 className="text-lg md:text-xl font-semibold text-gray-900">Startup Utvärderingar</h1>
           <div className="flex items-center gap-4">
-            <Link 
-              to="/admin/history" 
-              className="text-gray-600 hover:text-gray-900 transition-colors p-2"
-              title="History"
-            >
-              <History size={20} />
-            </Link>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  <History className="h-5 w-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-[300px]">
+                <DropdownMenuLabel>Nyligen raderade</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  {recentlyDeleted && recentlyDeleted.length > 0 ? (
+                    recentlyDeleted.map((evaluation) => (
+                      <DropdownMenuItem key={evaluation.id} className="flex flex-col items-start py-2">
+                        <span className="font-medium">{evaluation.company_name}</span>
+                        <span className="text-sm text-gray-500">
+                          {new Date(evaluation.updated_at).toLocaleDateString('sv-SE')}
+                        </span>
+                      </DropdownMenuItem>
+                    ))
+                  ) : (
+                    <DropdownMenuItem disabled>Inga raderade utvärderingar</DropdownMenuItem>
+                  )}
+                </DropdownMenuGroup>
+                {recentlyDeleted && recentlyDeleted.length > 0 && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem 
+                      className="text-sm text-blue-600 hover:text-blue-800"
+                      onClick={() => navigate('/admin/history')}
+                    >
+                      Visa alla raderade
+                    </DropdownMenuItem>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
             <Button 
               variant="outline"
               size="sm"
