@@ -86,12 +86,12 @@ export function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-100">
       <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-8 py-6 flex justify-between items-center">
-          <h1 className="text-xl font-semibold text-gray-900">Startup Utvärderingar</h1>
-          <div className="flex items-center gap-6">
+        <div className="w-full px-4 md:px-6 py-4 flex justify-between items-center">
+          <h1 className="text-lg md:text-xl font-semibold text-gray-900">Startup Utvärderingar</h1>
+          <div className="flex items-center gap-4">
             <Link 
               to="/admin/history" 
-              className="text-gray-600 hover:text-gray-900 transition-colors"
+              className="text-gray-600 hover:text-gray-900 transition-colors p-2"
               title="History"
             >
               <History size={20} />
@@ -100,6 +100,7 @@ export function Dashboard() {
               variant="outline"
               size="sm"
               onClick={handleSignOut}
+              className="whitespace-nowrap"
             >
               Logga ut
             </Button>
@@ -107,8 +108,8 @@ export function Dashboard() {
         </div>
       </header>
 
-      <main className="w-full px-6 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <main className="container mx-auto px-4 md:px-6 py-6 md:py-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {evaluations?.map((evaluation) => (
             <EvaluationCard
               key={evaluation.id}
