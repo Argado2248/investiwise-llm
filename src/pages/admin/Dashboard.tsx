@@ -125,7 +125,11 @@ export function Dashboard() {
                   <History className="h-5 w-5" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-[300px]">
+              <DropdownMenuContent 
+                align="center" 
+                className="w-[90vw] md:w-[300px]"
+                sideOffset={8}
+              >
                 <DropdownMenuLabel>Nyligen raderade</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
