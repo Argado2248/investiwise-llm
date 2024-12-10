@@ -159,7 +159,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-4xl mx-auto">
+      <div className="w-full max-w-4xl mx-auto text-center">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-primary mb-4">
             Startup Utvärderingsverktyg
