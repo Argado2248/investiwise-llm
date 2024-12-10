@@ -158,18 +158,18 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-4xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-primary mb-4">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 overflow-y-auto">
+      <div className="w-full max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="text-2xl sm:text-4xl font-bold text-primary mb-2 sm:mb-4">
             Startup Utvärderingsverktyg
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-base sm:text-lg text-gray-600">
             Utvärdera din startups investeringspotential med VC-metodik
           </p>
         </div>
 
-        <div className="space-y-8">
+        <div className="space-y-6 sm:space-y-8">
           <EvaluationForm onSubmit={handleEvaluation} />
           {results && (
             <EvaluationResults data={results} />
