@@ -86,18 +86,19 @@ export function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-100">
       <header className="bg-white shadow">
-        <div className="w-full py-4 px-6 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">Startup Utvärderingar</h1>
-          <div className="flex items-center gap-4">
+        <div className="max-w-7xl mx-auto px-8 py-6 flex justify-between items-center">
+          <h1 className="text-xl font-semibold text-gray-900">Startup Utvärderingar</h1>
+          <div className="flex items-center gap-6">
             <Link 
               to="/admin/history" 
-              className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
+              className="text-gray-600 hover:text-gray-900 transition-colors"
+              title="History"
             >
               <History size={20} />
-              <span>History</span>
             </Link>
             <Button 
               variant="outline"
+              size="sm"
               onClick={handleSignOut}
             >
               Logga ut
