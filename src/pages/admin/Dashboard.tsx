@@ -3,10 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
 import { EvaluationCard } from "@/components/admin/EvaluationCard";
-import { DeletedEvaluationsMenu } from "@/components/admin/DeletedEvaluationsMenu";
 import { RecoveryDialog } from "@/components/admin/RecoveryDialog";
+import { DashboardHeader } from "@/components/admin/DashboardHeader";
 
 export function Dashboard() {
   const navigate = useNavigate();
@@ -125,28 +124,14 @@ export function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <header className="bg-white shadow">
-        <div className="w-full px-4 md:px-6 py-4 flex justify-between items-center">
-          <h1 className="text-lg md:text-xl font-semibold text-gray-900">Startup Utvärderingar</h1>
-          <div className="flex items-center gap-4">
-            <DeletedEvaluationsMenu
-              recentlyDeleted={recentlyDeleted}
-              onSelectEvaluation={(evaluation) => {
-                setSelectedEvaluation(evaluation);
-                setIsAlertOpen(true);
-              }}
-            />
-            <Button 
-              variant="outline"
-              size="sm"
-              onClick={handleSignOut}
-              className="whitespace-nowrap"
-            >
-              Logga ut
-            </Button>
-          </div>
-        </div>
-      </header>
+      <DashboardHeader
+        recentlyDeleted={recentlyDeleted || []}
+        onSelectEvaluation={(evaluation) => {
+          setSelectedEvaluation(evaluation);
+          setIsAlertOpen(true);
+        }}
+        onSignOut={handleSignOut}
+      />
 
       <RecoveryDialog
         isOpen={isAlertOpen}
