@@ -45,7 +45,7 @@ export function Login() {
                     inputBorderHover: 'rgb(26, 35, 126)',
                     inputBorderFocus: 'rgb(26, 35, 126)',
                   },
-                  borderRadii: {
+                  radii: {
                     borderRadiusButton: '0.5rem',
                     buttonBorderRadius: '0.5rem',
                     inputBorderRadius: '0.5rem',
