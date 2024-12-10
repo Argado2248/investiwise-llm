@@ -159,7 +159,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 w-full overflow-y-auto">
-      <div className="text-center py-8 sm:py-12">
+      <div className="text-center p-8 m-auto">
         <h1 className="text-3xl sm:text-4xl font-bold text-primary mb-2 sm:mb-3">
           Startup Utvärderingsverktyg
         </h1>
