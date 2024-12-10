@@ -6,6 +6,7 @@ import { SelectField } from "./form/SelectField";
 import { NumberField } from "./form/NumberField";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { FormFieldWithTooltip } from "./FormFieldWithTooltip";
+import { supabase } from "@/integrations/supabase/client";
 
 const fundingStages = [
   { value: "pre-sadd", label: "Pre-sådd" },
@@ -46,7 +47,7 @@ export function EvaluationForm({ onSubmit }: { onSubmit: (data: any) => void }) 
     productStage: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (Object.values(formData).some(value => !value)) {
       toast({
@@ -56,7 +57,38 @@ export function EvaluationForm({ onSubmit }: { onSubmit: (data: any) => void }) 
       });
       return;
     }
-    onSubmit(formData);
+
+    try {
+      const { error } = await supabase
+        .from('startup_evaluations')
+        .insert({
+          company_name: formData.companyName,
+          industry: formData.industry,
+          revenue: Number(formData.revenue),
+          growth: Number(formData.growth),
+          market_size: Number(formData.marketSize),
+          team_size: Number(formData.teamSize),
+          funding_stage: formData.fundingStage,
+          burn_rate: Number(formData.burnRate),
+          product_stage: formData.productStage
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: "Utvärdering sparad",
+        description: "Din startup-utvärdering har sparats framgångsrikt.",
+      });
+
+      onSubmit(formData);
+    } catch (error) {
+      console.error('Error saving evaluation:', error);
+      toast({
+        title: "Ett fel uppstod",
+        description: "Kunde inte spara utvärderingen. Försök igen senare.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
