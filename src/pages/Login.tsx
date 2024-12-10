@@ -18,19 +18,47 @@ export function Login() {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-extrabold text-gray-900">
+    <div className="flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 animate-fade-in">
+      <div className="w-full max-w-md space-y-8">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold text-primary">
             Admin Login
           </h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Logga in för att hantera startup-utvärderingar
+          </p>
         </div>
 
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div className="bg-card shadow-lg rounded-lg p-6">
           <Auth
             supabaseClient={supabase}
-            appearance={{ theme: ThemeSupa }}
-            theme="light"
+            appearance={{
+              theme: ThemeSupa,
+              variables: {
+                default: {
+                  colors: {
+                    brand: 'rgb(26, 35, 126)',
+                    brandAccent: 'rgb(0, 121, 107)',
+                    inputBackground: 'white',
+                    inputText: 'black',
+                    inputBorder: 'lightgray',
+                    inputBorderHover: 'rgb(26, 35, 126)',
+                    inputBorderFocus: 'rgb(26, 35, 126)',
+                  },
+                  borderRadii: {
+                    borderRadiusButton: '0.5rem',
+                    buttonBorderRadius: '0.5rem',
+                    inputBorderRadius: '0.5rem',
+                  },
+                },
+              },
+              className: {
+                button: 'bg-primary hover:bg-primary/90 text-white',
+                input: 'bg-background border-input',
+                label: 'text-foreground',
+              },
+            }}
+            theme="default"
             providers={[]}
           />
         </div>
