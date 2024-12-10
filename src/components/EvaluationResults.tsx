@@ -27,7 +27,7 @@ export function EvaluationResults({ data }: EvaluationResultsProps) {
   const getScoreWidth = (score: number) => `${score}%`;
 
   return (
-    <Card className="p-6 max-w-2xl mx-auto bg-white shadow-lg animate-fade-in">
+    <Card className="p-6 w-full bg-white shadow-lg animate-fade-in">
       <div className="space-y-6">
         {/* Overall Score Section */}
         <div className="text-center border-b pb-6">
@@ -62,11 +62,11 @@ export function EvaluationResults({ data }: EvaluationResultsProps) {
                   <span className="font-medium mr-2">Branschriktmärke:</span>
                   <span>{metric.benchmark}%</span>
                 </div>
-                <p className="text-base text-gray-700 leading-relaxed">
+                <p className="text-base text-gray-700 leading-relaxed break-words">
                   {metric.impact}
                 </p>
                 {metric.source && (
-                  <p className="text-sm text-gray-500 italic">
+                  <p className="text-sm text-gray-500 italic break-words">
                     Källa: {metric.source}
                   </p>
                 )}
@@ -78,8 +78,8 @@ export function EvaluationResults({ data }: EvaluationResultsProps) {
         {/* Recommendation Section */}
         <div className="bg-primary/5 p-6 rounded-lg border border-primary/10">
           <h3 className="text-xl font-semibold mb-3 text-primary">Rekommendation</h3>
-          <p className="text-base text-gray-700 leading-relaxed mb-3">{data.recommendation}</p>
-          <p className="text-sm text-gray-500 italic">
+          <p className="text-base text-gray-700 leading-relaxed break-words">{data.recommendation}</p>
+          <p className="text-sm text-gray-500 italic mt-3 break-words">
             Rekommendationer baserade på Nordic Venture Capital Association's investeringskriterier och Nordic Startup Success Factors Study 2023.
           </p>
         </div>
