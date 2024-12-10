@@ -45,7 +45,7 @@ export function DeletedEvaluationsMenu({
             recentlyDeleted.map((evaluation) => (
               <DropdownMenuItem 
                 key={evaluation.id} 
-                className="flex flex-col items-center w-full py-2"
+                className="flex flex-col items-start w-full py-2"
                 onClick={() => onSelectEvaluation(evaluation)}
               >
                 <span className="font-medium">{evaluation.company_name}</span>
