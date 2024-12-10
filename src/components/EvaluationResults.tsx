@@ -29,7 +29,7 @@ export function EvaluationResults({ data }: EvaluationResultsProps) {
 
   return (
     <Card className="w-full bg-white shadow-lg animate-fade-in">
-      <ScrollArea className="h-[calc(100vh-8rem)] px-6">
+      <ScrollArea className="h-[calc(100vh-8rem)] p-8">
         <div className="space-y-6">
           {/* Overall Score Section */}
           <div className="text-center border-b pb-6">
