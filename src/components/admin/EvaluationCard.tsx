@@ -88,9 +88,9 @@ export function EvaluationCard({ evaluation, score, onDelete }: EvaluationCardPr
                 Utforska
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-2xl">
+            <DialogContent className="w-[95vw] max-w-2xl h-[90vh] p-4 md:p-6">
               <DialogHeader>
-                <DialogTitle>{evaluation.company_name} - Detaljerad Utvärdering</DialogTitle>
+                <DialogTitle className="text-lg md:text-xl">{evaluation.company_name} - Detaljerad Utvärdering</DialogTitle>
               </DialogHeader>
               <EvaluationResults
                 data={{
