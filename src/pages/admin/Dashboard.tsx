@@ -15,10 +15,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export function Dashboard() {
   const navigate = useNavigate();
   const [session, setSession] = useState(null);
+  const [selectedEvaluation, setSelectedEvaluation] = useState(null);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -57,7 +69,7 @@ export function Dashboard() {
     },
   });
 
-  const { data: recentlyDeleted } = useQuery({
+  const { data: recentlyDeleted, refetch: refetchDeleted } = useQuery({
     queryKey: ['recently-deleted-evaluations'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -75,13 +87,23 @@ export function Dashboard() {
     },
   });
 
-  const handleSignOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      toast.error('Error signing out');
-    } else {
-      toast.success('Signed out successfully');
-      navigate('/login');
+  const handleRecoverEvaluation = async () => {
+    try {
+      const { error } = await supabase
+        .from('startup_evaluations')
+        .update({ deleted: false })
+        .eq('id', selectedEvaluation.id);
+
+      if (error) throw error;
+      
+      toast.success('Evaluation recovered successfully');
+      refetch();
+      refetchDeleted();
+      setIsAlertOpen(false);
+      setSelectedEvaluation(null);
+    } catch (error) {
+      toast.error('Failed to recover evaluation');
+      console.error('Error:', error);
     }
   };
 
@@ -135,7 +157,14 @@ export function Dashboard() {
                 <DropdownMenuGroup>
                   {recentlyDeleted && recentlyDeleted.length > 0 ? (
                     recentlyDeleted.map((evaluation) => (
-                      <DropdownMenuItem key={evaluation.id} className="flex flex-col items-start py-2">
+                      <DropdownMenuItem 
+                        key={evaluation.id} 
+                        className="flex flex-col items-center w-full py-2"
+                        onClick={() => {
+                          setSelectedEvaluation(evaluation);
+                          setIsAlertOpen(true);
+                        }}
+                      >
                         <span className="font-medium">{evaluation.company_name}</span>
                         <span className="text-sm text-gray-500">
                           {new Date(evaluation.updated_at).toLocaleDateString('sv-SE')}
@@ -170,6 +199,21 @@ export function Dashboard() {
           </div>
         </div>
       </header>
+
+      <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Återställ utvärdering</AlertDialogTitle>
+            <AlertDialogDescription>
+              Är du säker på att du vill återställa utvärderingen för {selectedEvaluation?.company_name}?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Nej</AlertDialogCancel>
+            <AlertDialogAction onClick={handleRecoverEvaluation}>Ja</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <main className="container mx-auto px-4 md:px-6 py-6 md:py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
