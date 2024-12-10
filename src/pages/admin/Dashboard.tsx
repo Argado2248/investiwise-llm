@@ -2,10 +2,16 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { MetricsTable } from "./MetricsTable";
-import { AdminSidebar } from "./AdminSidebar";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 
 export function Dashboard() {
   const navigate = useNavigate();
@@ -64,37 +70,56 @@ export function Dashboard() {
   }
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <AdminSidebar />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <header className="bg-white shadow">
-          <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-            <Button 
-              variant="outline"
-              onClick={handleSignOut}
-              className="ml-4"
-            >
-              Sign Out
-            </Button>
-          </div>
-        </header>
+    <div className="min-h-screen bg-gray-100">
+      <header className="bg-white shadow">
+        <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-gray-900">Startup Utvärderingar</h1>
+          <Button 
+            variant="outline"
+            onClick={handleSignOut}
+            className="ml-4"
+          >
+            Logga ut
+          </Button>
+        </div>
+      </header>
 
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="bg-white shadow rounded-lg">
-              <div className="px-4 py-5 sm:p-6">
-                <h2 className="text-lg font-medium text-gray-900 mb-4">Recent Evaluations</h2>
-                {evaluations && evaluations.length > 0 ? (
-                  <MetricsTable data={evaluations} />
-                ) : (
-                  <p className="text-gray-500">No evaluations found.</p>
-                )}
-              </div>
-            </div>
-          </div>
-        </main>
-      </div>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="bg-white shadow rounded-lg overflow-hidden">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Företag</TableHead>
+                <TableHead>Bransch</TableHead>
+                <TableHead>Fas</TableHead>
+                <TableHead>Omsättning</TableHead>
+                <TableHead>Tillväxt</TableHead>
+                <TableHead>Marknadsstorlek</TableHead>
+                <TableHead>Team</TableHead>
+                <TableHead>Burn Rate</TableHead>
+                <TableHead>Produktstadie</TableHead>
+                <TableHead>Datum</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {evaluations?.map((evaluation) => (
+                <TableRow key={evaluation.id}>
+                  <TableCell className="font-medium">{evaluation.company_name}</TableCell>
+                  <TableCell>{evaluation.industry}</TableCell>
+                  <TableCell>{evaluation.funding_stage}</TableCell>
+                  <TableCell>{evaluation.revenue.toLocaleString()} SEK</TableCell>
+                  <TableCell>{evaluation.growth}%</TableCell>
+                  <TableCell>{evaluation.market_size.toLocaleString()} MSEK</TableCell>
+                  <TableCell>{evaluation.team_size}</TableCell>
+                  <TableCell>{evaluation.burn_rate.toLocaleString()} SEK</TableCell>
+                  <TableCell>{evaluation.product_stage}</TableCell>
+                  <TableCell>{new Date(evaluation.created_at).toLocaleDateString('sv-SE')}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </main>
     </div>
   );
 }
