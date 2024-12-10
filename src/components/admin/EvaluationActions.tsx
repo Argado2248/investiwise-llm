@@ -34,7 +34,7 @@ export function EvaluationActions({ evaluation, score, onDelete }: EvaluationAct
             Utforska
           </Button>
         </DialogTrigger>
-        <DialogContent className="w-[95vw] max-w-2xl h-[90vh] p-3 md:p-6">
+        <DialogContent className="w-[95vw] max-w-2xl h-[90vh] p-3 md:p-6 overflow-hidden">
           <DialogHeader>
             <DialogTitle className="text-base md:text-xl">{evaluation.company_name} - Detaljerad Utvärdering</DialogTitle>
           </DialogHeader>
