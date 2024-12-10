@@ -87,11 +87,8 @@ export function Dashboard() {
 
       if (error) throw error;
       
+      await Promise.all([refetch(), refetchDeleted()]);
       toast.success('Evaluation recovered successfully');
-      refetch();
-      refetchDeleted();
-      setIsAlertOpen(false);
-      setSelectedEvaluation(null);
     } catch (error) {
       toast.error('Failed to recover evaluation');
       console.error('Error:', error);

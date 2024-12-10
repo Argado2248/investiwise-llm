@@ -13,7 +13,7 @@ interface RecoveryDialogProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   selectedEvaluation: any;
-  onRecover: () => void;
+  onRecover: () => Promise<void>;
 }
 
 export function RecoveryDialog({
@@ -22,6 +22,11 @@ export function RecoveryDialog({
   selectedEvaluation,
   onRecover,
 }: RecoveryDialogProps) {
+  const handleRecover = async () => {
+    await onRecover();
+    onOpenChange(false);
+  };
+
   return (
     <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
       <AlertDialogContent>
@@ -33,7 +38,7 @@ export function RecoveryDialog({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Nej</AlertDialogCancel>
-          <AlertDialogAction onClick={onRecover}>Ja</AlertDialogAction>
+          <AlertDialogAction onClick={handleRecover}>Ja</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
