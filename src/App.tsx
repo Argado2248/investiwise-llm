@@ -14,22 +14,20 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <div className="min-h-screen w-full flex flex-col items-center justify-center">
+      <SidebarProvider>
+        <BrowserRouter>
+          <Container>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/admin" element={<Dashboard />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Container>
+        </BrowserRouter>
         <Toaster />
         <Sonner />
-        <SidebarProvider>
-          <BrowserRouter>
-            <Container>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/admin" element={<Dashboard />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-            </Container>
-          </BrowserRouter>
-        </SidebarProvider>
-      </div>
+      </SidebarProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
