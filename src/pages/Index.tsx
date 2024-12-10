@@ -168,7 +168,7 @@ const Index = () => {
         </p>
       </div>
 
-      <div className="space-y-6 sm:space-y-8">
+      <div className="space-y-6 sm:space-y-8 px-8 mx-auto max-w-7xl">
         <EvaluationForm onSubmit={handleEvaluation} />
         {results && (
           <EvaluationResults data={results} />
