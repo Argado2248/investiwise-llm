@@ -5,26 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { EvaluationCard } from "@/components/admin/EvaluationCard";
-import { History } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { DeletedEvaluationsMenu } from "@/components/admin/DeletedEvaluationsMenu";
+import { RecoveryDialog } from "@/components/admin/RecoveryDialog";
 
 export function Dashboard() {
   const navigate = useNavigate();
@@ -87,6 +69,16 @@ export function Dashboard() {
     },
   });
 
+  const handleSignOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      toast.error('Error signing out');
+    } else {
+      toast.success('Signed out successfully');
+      navigate('/login');
+    }
+  };
+
   const handleRecoverEvaluation = async () => {
     try {
       const { error } = await supabase
@@ -137,57 +129,13 @@ export function Dashboard() {
         <div className="w-full px-4 md:px-6 py-4 flex justify-between items-center">
           <h1 className="text-lg md:text-xl font-semibold text-gray-900">Startup Utvärderingar</h1>
           <div className="flex items-center gap-4">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  size="icon"
-                  className="text-gray-600 hover:text-gray-900 transition-colors"
-                >
-                  <History className="h-5 w-5" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent 
-                align="center" 
-                className="w-[90vw] md:w-[300px]"
-                sideOffset={8}
-              >
-                <DropdownMenuLabel>Nyligen raderade</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                  {recentlyDeleted && recentlyDeleted.length > 0 ? (
-                    recentlyDeleted.map((evaluation) => (
-                      <DropdownMenuItem 
-                        key={evaluation.id} 
-                        className="flex flex-col items-center w-full py-2"
-                        onClick={() => {
-                          setSelectedEvaluation(evaluation);
-                          setIsAlertOpen(true);
-                        }}
-                      >
-                        <span className="font-medium">{evaluation.company_name}</span>
-                        <span className="text-sm text-gray-500">
-                          {new Date(evaluation.updated_at).toLocaleDateString('sv-SE')}
-                        </span>
-                      </DropdownMenuItem>
-                    ))
-                  ) : (
-                    <DropdownMenuItem disabled>Inga raderade utvärderingar</DropdownMenuItem>
-                  )}
-                </DropdownMenuGroup>
-                {recentlyDeleted && recentlyDeleted.length > 0 && (
-                  <>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem 
-                      className="text-sm text-blue-600 hover:text-blue-800"
-                      onClick={() => navigate('/admin/history')}
-                    >
-                      Visa alla raderade
-                    </DropdownMenuItem>
-                  </>
-                )}
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <DeletedEvaluationsMenu
+              recentlyDeleted={recentlyDeleted}
+              onSelectEvaluation={(evaluation) => {
+                setSelectedEvaluation(evaluation);
+                setIsAlertOpen(true);
+              }}
+            />
             <Button 
               variant="outline"
               size="sm"
@@ -200,20 +148,12 @@ export function Dashboard() {
         </div>
       </header>
 
-      <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Återställ utvärdering</AlertDialogTitle>
-            <AlertDialogDescription>
-              Är du säker på att du vill återställa utvärderingen för {selectedEvaluation?.company_name}?
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Nej</AlertDialogCancel>
-            <AlertDialogAction onClick={handleRecoverEvaluation}>Ja</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <RecoveryDialog
+        isOpen={isAlertOpen}
+        onOpenChange={setIsAlertOpen}
+        selectedEvaluation={selectedEvaluation}
+        onRecover={handleRecoverEvaluation}
+      />
 
       <main className="container mx-auto px-4 md:px-6 py-6 md:py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
