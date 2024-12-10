@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Trash2 } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -8,6 +9,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { EvaluationResults } from "@/components/EvaluationResults";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 interface EvaluationCardProps {
   evaluation: {
@@ -23,11 +26,36 @@ interface EvaluationCardProps {
     product_stage: string;
   };
   score: number;
+  onDelete?: () => void;
 }
 
-export function EvaluationCard({ evaluation, score }: EvaluationCardProps) {
+export function EvaluationCard({ evaluation, score, onDelete }: EvaluationCardProps) {
+  const handleDelete = async () => {
+    try {
+      const { error } = await supabase
+        .from('startup_evaluations')
+        .update({ deleted: true })
+        .eq('id', evaluation.id);
+
+      if (error) throw error;
+      
+      toast.success('Evaluation moved to recycle bin');
+      if (onDelete) onDelete();
+    } catch (error) {
+      toast.error('Failed to delete evaluation');
+      console.error('Error:', error);
+    }
+  };
+
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 relative">
+      <button
+        onClick={handleDelete}
+        className="absolute top-4 right-4 p-2 text-gray-500 hover:text-red-500 transition-colors"
+        aria-label="Delete evaluation"
+      >
+        <Trash2 size={20} />
+      </button>
       <div className="p-6 space-y-4">
         <div className="flex justify-between items-start">
           <div>

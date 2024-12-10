@@ -5,10 +5,10 @@ import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { EvaluationCard } from "@/components/admin/EvaluationCard";
-import { History } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 
-export function Dashboard() {
+export function History() {
   const navigate = useNavigate();
   const [session, setSession] = useState(null);
 
@@ -33,31 +33,21 @@ export function Dashboard() {
   }, [navigate]);
 
   const { data: evaluations, isLoading, refetch } = useQuery({
-    queryKey: ['startup-evaluations'],
+    queryKey: ['deleted-evaluations'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('startup_evaluations')
         .select('*')
-        .eq('deleted', false)
-        .order('created_at', { ascending: false });
+        .eq('deleted', true)
+        .order('updated_at', { ascending: false });
 
       if (error) {
-        toast.error('Failed to fetch evaluations');
+        toast.error('Failed to fetch deleted evaluations');
         throw error;
       }
       return data;
     },
   });
-
-  const handleSignOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      toast.error('Error signing out');
-    } else {
-      toast.success('Signed out successfully');
-      navigate('/login');
-    }
-  };
 
   const calculateScore = (evaluation: any) => {
     const weights = {
@@ -87,21 +77,15 @@ export function Dashboard() {
     <div className="min-h-screen bg-gray-100">
       <header className="bg-white shadow">
         <div className="w-full py-4 px-6 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">Startup Utvärderingar</h1>
           <div className="flex items-center gap-4">
             <Link 
-              to="/admin/history" 
+              to="/admin" 
               className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
             >
-              <History size={20} />
-              <span>History</span>
+              <ArrowLeft size={20} />
+              <span>Back</span>
             </Link>
-            <Button 
-              variant="outline"
-              onClick={handleSignOut}
-            >
-              Logga ut
-            </Button>
+            <h1 className="text-2xl font-bold text-gray-900">Deleted Evaluations</h1>
           </div>
         </div>
       </header>

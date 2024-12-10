@@ -14,6 +14,7 @@ export type Database = {
           burn_rate: number
           company_name: string
           created_at: string | null
+          deleted: boolean | null
           funding_stage: string
           growth: number
           id: string
@@ -28,6 +29,7 @@ export type Database = {
           burn_rate: number
           company_name: string
           created_at?: string | null
+          deleted?: boolean | null
           funding_stage: string
           growth: number
           id?: string
@@ -42,6 +44,7 @@ export type Database = {
           burn_rate?: number
           company_name?: string
           created_at?: string | null
+          deleted?: boolean | null
           funding_stage?: string
           growth?: number
           id?: string
