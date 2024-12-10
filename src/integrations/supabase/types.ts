@@ -9,7 +9,51 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      startup_evaluations: {
+        Row: {
+          burn_rate: number
+          company_name: string
+          created_at: string | null
+          funding_stage: string
+          growth: number
+          id: string
+          industry: string
+          market_size: number
+          product_stage: string
+          revenue: number
+          team_size: number
+          updated_at: string | null
+        }
+        Insert: {
+          burn_rate: number
+          company_name: string
+          created_at?: string | null
+          funding_stage: string
+          growth: number
+          id?: string
+          industry: string
+          market_size: number
+          product_stage: string
+          revenue: number
+          team_size: number
+          updated_at?: string | null
+        }
+        Update: {
+          burn_rate?: number
+          company_name?: string
+          created_at?: string | null
+          funding_stage?: string
+          growth?: number
+          id?: string
+          industry?: string
+          market_size?: number
+          product_stage?: string
+          revenue?: number
+          team_size?: number
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
