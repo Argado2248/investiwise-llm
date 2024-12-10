@@ -2,6 +2,9 @@ import { useState } from "react";
 import { EvaluationForm } from "@/components/EvaluationForm";
 import { EvaluationResults } from "@/components/EvaluationResults";
 import { EvaluationHeader } from "@/components/evaluation/EvaluationHeader";
+import { Button } from "@/components/ui/button";
+import { LogIn } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import {
   calculateMarketPotentialScore,
   calculateTeamScore,
@@ -13,6 +16,7 @@ import { generateRecommendation } from "@/utils/evaluationRecommendations";
 const Index = () => {
   const [results, setResults] = useState<any>(null);
   const [formData, setFormData] = useState<any>(null);
+  const navigate = useNavigate();
 
   const handleEvaluation = (formData: any) => {
     setFormData(formData);
@@ -84,6 +88,17 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 w-full overflow-y-auto">
+      <div className="flex justify-end p-4">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => navigate('/login')}
+          className="gap-2"
+        >
+          <LogIn className="h-4 w-4" />
+          Admin Login
+        </Button>
+      </div>
       <EvaluationHeader />
       <div className="space-y-6 sm:space-y-8 px-8 py-8 mx-auto max-w-7xl">
         <EvaluationForm onSubmit={handleEvaluation} />
