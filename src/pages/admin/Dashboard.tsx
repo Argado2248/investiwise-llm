@@ -81,21 +81,20 @@ export function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center">
-      <header className="bg-white shadow w-full">
-        <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+    <div className="min-h-screen bg-gray-100">
+      <header className="bg-white shadow">
+        <div className="w-full py-4 px-6 flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-900">Startup Utvärderingar</h1>
           <Button 
             variant="outline"
             onClick={handleSignOut}
-            className="ml-4"
           >
             Logga ut
           </Button>
         </div>
       </header>
 
-      <main className="max-w-7xl w-full px-4 sm:px-6 lg:px-8 py-8">
+      <main className="w-full px-6 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {evaluations?.map((evaluation) => (
             <EvaluationCard

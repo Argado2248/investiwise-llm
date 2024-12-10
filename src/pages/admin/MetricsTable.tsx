@@ -28,7 +28,7 @@ interface MetricsTableProps {
 
 export function MetricsTable({ data }: MetricsTableProps) {
   return (
-    <div className="rounded-md border">
+    <div className="w-full overflow-hidden border rounded-md">
       <Table>
         <TableHeader>
           <TableRow>
