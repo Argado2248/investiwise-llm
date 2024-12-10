@@ -159,11 +159,11 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 w-full overflow-y-auto">
-      <div className="text-center py-16 sm:py-20">
-        <h1 className="text-2xl sm:text-4xl font-bold text-primary mb-2 sm:mb-4">
+      <div className="text-center py-8 sm:py-12">
+        <h1 className="text-3xl sm:text-4xl font-bold text-primary mb-2 sm:mb-3">
           Startup Utvärderingsverktyg
         </h1>
-        <p className="text-base sm:text-lg text-gray-600">
+        <p className="text-lg sm:text-xl text-gray-600">
           Utvärdera din startups investeringspotential med VC-metodik
         </p>
       </div>
