@@ -6,18 +6,14 @@ interface TeamMarketFieldsProps {
     teamSize: string;
     marketSize: string;
     teamExperienceYears: string;
-    previousExits: string;
     teamDomainExpertise: string;
-    teamPreviousStartups: string;
   };
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   fieldTooltips: {
     teamSize: string;
     marketSize: string;
     teamExperienceYears: string;
-    previousExits: string;
     teamDomainExpertise: string;
-    teamPreviousStartups: string;
   };
 }
 
@@ -59,18 +55,6 @@ export function TeamMarketFields({
           placeholder="Antal år"
           tooltip={fieldTooltips.teamExperienceYears}
         />
-        <NumberField
-          label="Tidigare exits"
-          id="previousExits"
-          name="previousExits"
-          value={formData.previousExits}
-          onChange={handleChange}
-          placeholder="Antal exits"
-          tooltip={fieldTooltips.previousExits}
-        />
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormFieldWithTooltip
           label="Domänexpertis"
           id="teamDomainExpertise"
@@ -80,15 +64,6 @@ export function TeamMarketFields({
           placeholder="t.ex. Fintech, AI, E-handel"
           tooltip={fieldTooltips.teamDomainExpertise}
           type="text"
-        />
-        <NumberField
-          label="Tidigare startups"
-          id="teamPreviousStartups"
-          name="teamPreviousStartups"
-          value={formData.teamPreviousStartups}
-          onChange={handleChange}
-          placeholder="Antal startups"
-          tooltip={fieldTooltips.teamPreviousStartups}
         />
       </div>
     </div>

@@ -20,12 +20,10 @@ export type Database = {
           id: string
           industry: string
           market_size: number
-          previous_exits: number
           product_stage: string
           revenue: number
           team_domain_expertise: string
           team_experience_years: number
-          team_previous_startups: number
           team_size: number
           updated_at: string | null
         }
@@ -39,12 +37,10 @@ export type Database = {
           id?: string
           industry: string
           market_size: number
-          previous_exits?: number
           product_stage: string
           revenue: number
           team_domain_expertise?: string
           team_experience_years?: number
-          team_previous_startups?: number
           team_size: number
           updated_at?: string | null
         }
@@ -58,12 +54,10 @@ export type Database = {
           id?: string
           industry?: string
           market_size?: number
-          previous_exits?: number
           product_stage?: string
           revenue?: number
           team_domain_expertise?: string
           team_experience_years?: number
-          team_previous_startups?: number
           team_size?: number
           updated_at?: string | null
         }
