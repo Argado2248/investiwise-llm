@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import { SelectField } from "./form/SelectField";
-import { NumberField } from "./form/NumberField";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { FormFieldWithTooltip } from "./FormFieldWithTooltip";
 import { supabase } from "@/integrations/supabase/client";
+import { CompanyInfoFields } from "./evaluation/CompanyInfoFields";
+import { FinancialFields } from "./evaluation/FinancialFields";
+import { TeamMarketFields } from "./evaluation/TeamMarketFields";
 
 const fundingStages = [
   { value: "pre-sadd", label: "Pre-sådd" },
@@ -108,100 +108,28 @@ export function EvaluationForm({ onSubmit }: { onSubmit: (data: any) => void }) 
   return (
     <TooltipProvider>
       <Card className="p-6 w-full max-w-2xl mx-auto bg-white shadow-lg animate-fade-in">
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormFieldWithTooltip
-                label="Företagsnamn"
-                id="companyName"
-                name="companyName"
-                value={formData.companyName}
-                onChange={handleChange}
-                placeholder="Ange företagsnamn"
-                tooltip={fieldTooltips.companyName}
-                type="text"
-              />
-              <FormFieldWithTooltip
-                label="Bransch"
-                id="industry"
-                name="industry"
-                value={formData.industry}
-                onChange={handleChange}
-                placeholder="t.ex. SaaS, Fintech"
-                tooltip={fieldTooltips.industry}
-                type="text"
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <SelectField
-                label="Finansieringsfas"
-                value={formData.fundingStage}
-                onChange={(value) => handleSelectChange("fundingStage", value)}
-                options={fundingStages}
-                placeholder="Välj finansieringsfas"
-              />
-              <SelectField
-                label="Produktstadie"
-                value={formData.productStage}
-                onChange={(value) => handleSelectChange("productStage", value)}
-                options={productStages}
-                placeholder="Välj produktstadie"
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <NumberField
-                label="Årlig Omsättning (SEK)"
-                id="revenue"
-                name="revenue"
-                value={formData.revenue}
-                onChange={handleChange}
-                placeholder="Årlig omsättning i SEK"
-                tooltip={fieldTooltips.revenue}
-              />
-              <NumberField
-                label="Tillväxt YoY (%)"
-                id="growth"
-                name="growth"
-                value={formData.growth}
-                onChange={handleChange}
-                placeholder="År över år tillväxt"
-                tooltip={fieldTooltips.growth}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <NumberField
-                label="Total Marknadsstorlek (MSEK)"
-                id="marketSize"
-                name="marketSize"
-                value={formData.marketSize}
-                onChange={handleChange}
-                placeholder="TAM i miljoner SEK"
-                tooltip={fieldTooltips.marketSize}
-              />
-              <NumberField
-                label="Teamstorlek"
-                id="teamSize"
-                name="teamSize"
-                value={formData.teamSize}
-                onChange={handleChange}
-                placeholder="Antal anställda"
-                tooltip={fieldTooltips.teamSize}
-              />
-            </div>
-
-            <NumberField
-              label="Månatlig Burn Rate (SEK)"
-              id="burnRate"
-              name="burnRate"
-              value={formData.burnRate}
-              onChange={handleChange}
-              placeholder="Månatlig burn rate i SEK"
-              tooltip={fieldTooltips.burnRate}
-            />
-          </div>
+        <form onSubmit={handleSubmit} className="space-y-8">
+          <CompanyInfoFields
+            formData={formData}
+            handleChange={handleChange}
+            handleSelectChange={handleSelectChange}
+            productStages={productStages}
+            fieldTooltips={fieldTooltips}
+          />
+          
+          <FinancialFields
+            formData={formData}
+            handleChange={handleChange}
+            handleSelectChange={handleSelectChange}
+            fundingStages={fundingStages}
+            fieldTooltips={fieldTooltips}
+          />
+          
+          <TeamMarketFields
+            formData={formData}
+            handleChange={handleChange}
+            fieldTooltips={fieldTooltips}
+          />
 
           <Button type="submit" className="w-full bg-primary hover:bg-primary/90">
             Utvärdera Startup
