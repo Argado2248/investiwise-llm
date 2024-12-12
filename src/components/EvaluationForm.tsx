@@ -30,7 +30,11 @@ const fieldTooltips = {
   growth: "Procentuell tillväxt jämfört med föregående år. För nya företag, ange förväntad tillväxt.",
   marketSize: "Total adresserbar marknad (TAM) i miljoner SEK.",
   teamSize: "Antal heltidsanställda inklusive grundare.",
-  burnRate: "Genomsnittlig månatlig kostnad i SEK."
+  burnRate: "Genomsnittlig månatlig kostnad i SEK.",
+  teamExperienceYears: "Genomsnittligt antal års relevant arbetserfarenhet i teamet.",
+  previousExits: "Antal tidigare framgångsrika exits bland teammedlemmarna.",
+  teamDomainExpertise: "Teamets huvudsakliga expertisområden inom branschen.",
+  teamPreviousStartups: "Totalt antal tidigare startups grundade av teammedlemmarna."
 };
 
 export function EvaluationForm({ onSubmit }: { onSubmit: (data: any) => void }) {
@@ -44,7 +48,11 @@ export function EvaluationForm({ onSubmit }: { onSubmit: (data: any) => void }) 
     teamSize: "",
     fundingStage: "",
     burnRate: "",
-    productStage: ""
+    productStage: "",
+    teamExperienceYears: "",
+    previousExits: "",
+    teamDomainExpertise: "",
+    teamPreviousStartups: ""
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -70,7 +78,11 @@ export function EvaluationForm({ onSubmit }: { onSubmit: (data: any) => void }) 
           team_size: Number(formData.teamSize),
           funding_stage: formData.fundingStage,
           burn_rate: Number(formData.burnRate),
-          product_stage: formData.productStage
+          product_stage: formData.productStage,
+          team_experience_years: Number(formData.teamExperienceYears),
+          previous_exits: Number(formData.previousExits),
+          team_domain_expertise: formData.teamDomainExpertise,
+          team_previous_startups: Number(formData.teamPreviousStartups)
         });
 
       if (error) throw error;
