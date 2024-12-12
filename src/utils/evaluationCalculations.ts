@@ -3,10 +3,12 @@ export const calculateMarketPotentialScore = (
   industry: string,
   fundingStage: string
 ) => {
+  // Based on KTH Innovation Readiness Level - Market Component
   const stageMultiplier = {
-    "Pre-sådd": 1.5,
-    "Sådd": 1.2,
-    "Serie A": 1.0,
+    "pre-sadd": 1.5,
+    "sadd": 1.2,
+    "angel": 1.1,
+    "serie-a": 1.0,
   }[fundingStage] || 1.0;
 
   const industryMultiplier = {
@@ -22,15 +24,25 @@ export const calculateMarketPotentialScore = (
   return Math.min(100, Math.max(0, baseScore));
 };
 
-export const calculateTeamScore = (teamSize: number, fundingStage: string) => {
+export const calculateTeamScore = (
+  teamSize: number,
+  teamExperienceYears: number,
+  teamDomainExpertise: string,
+  fundingStage: string
+) => {
+  // Based on KTH Innovation Readiness Level - Team Component
   const expectedSize = {
-    "Pre-sådd": 2,
-    "Sådd": 4,
-    "Serie A": 8,
+    "pre-sadd": 2,
+    "sadd": 4,
+    "angel": 6,
+    "serie-a": 8,
   }[fundingStage] || 5;
 
-  const score = (teamSize / expectedSize) * 100;
-  return Math.min(100, Math.max(0, score));
+  const sizeScore = (teamSize / expectedSize) * 40;
+  const experienceScore = Math.min(30, (teamExperienceYears / 10) * 30);
+  const expertiseScore = teamDomainExpertise ? 30 : 0;
+
+  return Math.min(100, sizeScore + experienceScore + expertiseScore);
 };
 
 export const calculateFinancialHealthScore = (
@@ -38,12 +50,16 @@ export const calculateFinancialHealthScore = (
   burnRate: number,
   fundingStage: string
 ) => {
-  if (fundingStage === "Pre-sådd" || fundingStage === "Sådd") {
+  // Based on KTH Innovation Readiness Level - Business Component
+  if (fundingStage === "pre-sadd" || fundingStage === "sadd") {
     const runway = revenue > 0 ? (revenue * 12) / burnRate : 0;
     return Math.min(100, (runway / 18) * 100);
   }
 
-  return Math.min(100, (revenue / burnRate) * 50);
+  const revenueScore = Math.min(50, (revenue / burnRate) * 25);
+  const burnRateScore = burnRate > 0 ? Math.min(50, (revenue / burnRate) * 25) : 0;
+
+  return revenueScore + burnRateScore;
 };
 
 export const calculateGrowthScore = (
@@ -51,14 +67,16 @@ export const calculateGrowthScore = (
   fundingStage: string,
   revenue: number
 ) => {
-  if (revenue < 100000 && (fundingStage === "Pre-sådd" || fundingStage === "Sådd")) {
+  // Based on KTH Innovation Readiness Level - Growth Component
+  if (revenue < 100000 && (fundingStage === "pre-sadd" || fundingStage === "sadd")) {
     return growth > 0 ? 70 : 40;
   }
 
   const expectedGrowth = {
-    "Pre-sådd": 20,
-    "Sådd": 50,
-    "Serie A": 100,
+    "pre-sadd": 20,
+    "sadd": 50,
+    "angel": 75,
+    "serie-a": 100,
   }[fundingStage] || 50;
 
   return Math.min(100, (growth / expectedGrowth) * 100);
