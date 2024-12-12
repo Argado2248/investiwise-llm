@@ -116,6 +116,8 @@ export function Dashboard() {
 
     const teamScore = calculateTeamScore(
       evaluation.team_size,
+      evaluation.team_experience_years,
+      evaluation.team_domain_expertise,
       evaluation.funding_stage
     );
 

@@ -25,11 +25,12 @@ const Index = () => {
     const marketSize = parseFloat(formData.marketSize);
     const teamSize = parseFloat(formData.teamSize);
     const burnRate = parseFloat(formData.burnRate);
-    const { industry, fundingStage } = formData;
+    const teamExperienceYears = parseFloat(formData.teamExperienceYears);
+    const { industry, fundingStage, teamDomainExpertise } = formData;
 
     const marketPotentialScore = calculateMarketPotentialScore(marketSize, industry, fundingStage);
     const financialHealthScore = calculateFinancialHealthScore(revenue, burnRate, fundingStage);
-    const teamScore = calculateTeamScore(teamSize, fundingStage);
+    const teamScore = calculateTeamScore(teamSize, teamExperienceYears, teamDomainExpertise, fundingStage);
     const growthScore = calculateGrowthScore(growth, fundingStage, revenue);
 
     const metrics = [
