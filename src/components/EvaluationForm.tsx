@@ -108,28 +108,39 @@ export function EvaluationForm({ onSubmit }: { onSubmit: (data: any) => void }) 
   return (
     <TooltipProvider>
       <Card className="p-6 w-full max-w-2xl mx-auto bg-white shadow-lg animate-fade-in">
-        <form onSubmit={handleSubmit} className="space-y-8">
-          <CompanyInfoFields
-            formData={formData}
-            handleChange={handleChange}
-            handleSelectChange={handleSelectChange}
-            productStages={productStages}
-            fieldTooltips={fieldTooltips}
-          />
-          
-          <FinancialFields
-            formData={formData}
-            handleChange={handleChange}
-            handleSelectChange={handleSelectChange}
-            fundingStages={fundingStages}
-            fieldTooltips={fieldTooltips}
-          />
-          
-          <TeamMarketFields
-            formData={formData}
-            handleChange={handleChange}
-            fieldTooltips={fieldTooltips}
-          />
+        <form onSubmit={handleSubmit} className="space-y-12">
+          <div className="space-y-8">
+            <div className="border-b pb-4">
+              <h2 className="text-xl font-semibold text-primary mb-6">Företagsinformation</h2>
+              <CompanyInfoFields
+                formData={formData}
+                handleChange={handleChange}
+                handleSelectChange={handleSelectChange}
+                productStages={productStages}
+                fieldTooltips={fieldTooltips}
+              />
+            </div>
+            
+            <div className="border-b pb-4">
+              <h2 className="text-xl font-semibold text-primary mb-6">Finansiell Information</h2>
+              <FinancialFields
+                formData={formData}
+                handleChange={handleChange}
+                handleSelectChange={handleSelectChange}
+                fundingStages={fundingStages}
+                fieldTooltips={fieldTooltips}
+              />
+            </div>
+            
+            <div className="pb-4">
+              <h2 className="text-xl font-semibold text-primary mb-6">Team & Marknad</h2>
+              <TeamMarketFields
+                formData={formData}
+                handleChange={handleChange}
+                fieldTooltips={fieldTooltips}
+              />
+            </div>
+          </div>
 
           <Button type="submit" className="w-full bg-primary hover:bg-primary/90">
             Utvärdera Startup
