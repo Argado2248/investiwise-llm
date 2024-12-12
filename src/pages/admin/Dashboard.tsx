@@ -6,6 +6,12 @@ import { toast } from "sonner";
 import { EvaluationCard } from "@/components/admin/EvaluationCard";
 import { RecoveryDialog } from "@/components/admin/RecoveryDialog";
 import { DashboardHeader } from "@/components/admin/DashboardHeader";
+import {
+  calculateMarketPotentialScore,
+  calculateTeamScore,
+  calculateFinancialHealthScore,
+  calculateGrowthScore
+} from "@/utils/evaluationCalculations";
 
 export function Dashboard() {
   const navigate = useNavigate();
@@ -96,23 +102,41 @@ export function Dashboard() {
   };
 
   const calculateScore = (evaluation: any) => {
-    const weights = {
-      revenue: 0.2,
-      growth: 0.3,
-      market_size: 0.2,
-      team_size: 0.15,
-      burn_rate: 0.15
-    };
+    const marketPotentialScore = calculateMarketPotentialScore(
+      evaluation.market_size,
+      evaluation.industry,
+      evaluation.funding_stage
+    );
 
-    const score = (
-      (evaluation.revenue / 1000000) * weights.revenue +
-      evaluation.growth * weights.growth +
-      (evaluation.market_size / 1000000000) * weights.market_size +
-      (evaluation.team_size / 10) * weights.team_size +
-      (1 - evaluation.burn_rate / 1000000) * weights.burn_rate
-    ) * 100;
+    const financialHealthScore = calculateFinancialHealthScore(
+      evaluation.revenue,
+      evaluation.burn_rate,
+      evaluation.funding_stage
+    );
 
-    return Math.min(Math.max(Math.round(score), 0), 100);
+    const teamScore = calculateTeamScore(
+      evaluation.team_size,
+      evaluation.funding_stage
+    );
+
+    const growthScore = calculateGrowthScore(
+      evaluation.growth,
+      evaluation.funding_stage,
+      evaluation.revenue
+    );
+
+    const metrics = [
+      { score: marketPotentialScore * 0.35 },
+      { score: financialHealthScore * 0.20 },
+      { score: teamScore * 0.30 },
+      { score: growthScore * 0.15 }
+    ];
+
+    const overallScore = Math.round(
+      metrics.reduce((acc, metric) => acc + metric.score, 0)
+    );
+
+    return overallScore;
   };
 
   if (isLoading) {
