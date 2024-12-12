@@ -27,6 +27,34 @@ export function EvaluationResults({ data }: EvaluationResultsProps) {
 
   const getScoreWidth = (score: number) => `${score}%`;
 
+  const getInvestmentReadiness = (score: number) => {
+    if (score >= 85) return {
+      level: "Investment Ready",
+      description: "Företaget är väl positionerat för investeringar med stark tillväxtpotential och låg risk."
+    };
+    if (score >= 70) return {
+      level: "Nästan Investment Ready",
+      description: "Företaget närmar sig investeringsberedskap men har några områden som behöver förbättras."
+    };
+    if (score >= 50) return {
+      level: "Under Utveckling",
+      description: "Företaget visar potential men behöver betydande förbättringar innan det är redo för investeringar."
+    };
+    return {
+      level: "Tidig Fas",
+      description: "Företaget är i ett för tidigt skede för betydande investeringar och behöver fokusera på grundläggande utveckling."
+    };
+  };
+
+  const getScoreExplanation = (score: number) => {
+    if (score >= 80) return "Exceptionell prestation som överträffar branschstandarder";
+    if (score >= 70) return "Stark prestation med några förbättringsområden";
+    if (score >= 60) return "Godtagbar prestation men betydande förbättringar krävs";
+    return "Behöver omfattande förbättringar för att möta investeringskriterier";
+  };
+
+  const investmentReadiness = getInvestmentReadiness(data.score);
+
   return (
     <Card className="w-full bg-white shadow-lg animate-fade-in">
       <ScrollArea className="h-[calc(100vh-8rem)] p-8">
@@ -38,6 +66,14 @@ export function EvaluationResults({ data }: EvaluationResultsProps) {
               {data.score}
               <span className="text-2xl text-gray-500">/100</span>
             </p>
+            <p className="mt-3 text-gray-600">{getScoreExplanation(data.score)}</p>
+          </div>
+
+          {/* Investment Readiness Section */}
+          <div className="bg-primary/5 p-6 rounded-lg border border-primary/10">
+            <h3 className="text-xl font-semibold mb-3 text-primary">Investeringsberedskap</h3>
+            <p className="font-semibold text-lg mb-2">{investmentReadiness.level}</p>
+            <p className="text-gray-700">{investmentReadiness.description}</p>
           </div>
 
           {/* Detailed Analysis Section */}
